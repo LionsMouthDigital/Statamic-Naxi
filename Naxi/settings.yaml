@@ -1,0 +1,4 @@
+fields:
+  access_token:
+    type: text
+    display: Mapbox Access Token
