@@ -19,6 +19,12 @@ class Geocoder
      */
     public function geocode($address, $accessToken = '')
     {
+        // Get data from cache if it exists.
+        if ($data = $this->cache->get($address)) {
+            return $data;
+        }
+
+        // Perform the API request.
         $client   = new Client();
         $response = $client->request('GET', $this->getUrl($address), [
             'query' => [
@@ -26,7 +32,13 @@ class Geocoder
             ],
         ]);
 
-        return json_decode($response->getBody(), true);
+        // Ain't nobody want no JSON.
+        $data = json_decode($response->getBody(), true);
+
+        // Cache data.
+        $this->cache->put($address, $data);
+
+        return $data;
     }
 
     /**
@@ -49,7 +61,7 @@ class Geocoder
      * @author Curtis Blackwell
      * @return string
      */
-    private function getAccessToken()
+    public function getAccessToken()
     {
         if (!$accessToken = $this->getConfig('access_token')) {
             \Log::error('Set your Mapbox access token in Geocode\'s settings.');

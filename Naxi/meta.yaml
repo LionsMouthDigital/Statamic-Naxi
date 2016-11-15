@@ -1,5 +1,5 @@
 name: Naxi
-version: 1.0.0
+version: 1.0.1
 description: Does map stuff, but really just geocodes addresses with the Mapbox API right now.
 url: lionsmouth.digital
 developer: LionsMouth Digital

@@ -7,6 +7,11 @@ use Statamic\Extend\Tags;
 
 class NaxiTags extends Tags
 {
+    public function init()
+    {
+        $this->geocoder = new Geocoder;
+    }
+
     /**
      * Get the full results from the geocode API call.
      *
@@ -18,8 +23,13 @@ class NaxiTags extends Tags
         $address     = $this->getParam('address');
         $accessToken = $this->getParam('access_token');
 
-        $response = (new Geocoder())->geocode($address, $accessToken);
+        $response = $this->geocoder->geocode($address, $accessToken);
 
         $this->parse($response, $this->context);
+    }
+
+    public function accessToken()
+    {
+        return $this->geocoder->getAccessToken();
     }
 }
